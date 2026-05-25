@@ -1,7 +1,7 @@
 # Weather App Pro
 
 A modern weather forecasting application built using Python and CustomTkinter.
-
+ 
 ## Features
 
 - Real-Time Weather Data
