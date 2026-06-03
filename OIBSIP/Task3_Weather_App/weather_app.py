@@ -6,7 +6,7 @@ import requests
 import csv
 import os
 from datetime import datetime
-import difflib  # 🔥 NEW: Built-in library for Spell Checking!
+import difflib  
 
 try:
     from fpdf import FPDF
@@ -35,7 +35,7 @@ class WeatherAppPro:
         self.history_file = "weather_history.csv"
         self.setup_file()
 
-        # 🔥 NEW: Database of popular cities for Autocomplete & Spell Check
+        
         self.popular_cities = [
             "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Ahmedabad", "Chennai", "Kolkata",
             "Surat", "Pune", "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Indore", "Thane", "Bhopal",
@@ -43,7 +43,7 @@ class WeatherAppPro:
             "Berlin", "Madrid", "Rome", "Chicago", "Los Angeles", "Seoul", "Beijing", "Moscow"
         ]
 
-        # --- Top Header ---
+        
         top_bar = ctk.CTkFrame(root, fg_color="transparent")
         top_bar.pack(fill="x", padx=20, pady=(15, 5))
 
@@ -54,7 +54,7 @@ class WeatherAppPro:
         self.theme_switch.pack(side="right")
         self.theme_switch.select()
 
-        # --- Tabbed Interface ---
+       
         self.tabview = ctk.CTkTabview(root, width=440, height=600, corner_radius=10)
         self.tabview.pack(padx=20, pady=5, fill="both", expand=True)
 
@@ -62,9 +62,7 @@ class WeatherAppPro:
         self.tab2 = self.tabview.add("5-Day Forecast")
         self.tab3 = self.tabview.add("History")
 
-        # ==========================================
-        #        TAB 1: CURRENT WEATHER
-        # ==========================================
+       
 
         search_frame = ctk.CTkFrame(self.tab1, fg_color="transparent")
         search_frame.pack(pady=(10, 5), fill="x", padx=10)
@@ -73,7 +71,7 @@ class WeatherAppPro:
                                        font=("Roboto", 14))
         self.city_entry.grid(row=0, column=0, padx=(0, 10))
 
-        # 🔥 Bind key typing to the autocomplete function
+        
         self.city_entry.bind("<KeyRelease>", self.update_suggestions)
 
         self.search_btn = ctk.CTkButton(search_frame, text="🔍 Search", width=100, height=40,
@@ -86,7 +84,7 @@ class WeatherAppPro:
                 _: self.fetch_weather() if self.city_entry.get() else None)
         self.unit_switch.pack(pady=(10, 15))
 
-        # 🔥 NEW: Floating Autocomplete Frame (Hidden by default)
+        
         self.suggestion_frame = ctk.CTkFrame(self.tab1, width=220, corner_radius=5, fg_color=("gray90", "gray25"))
 
         # Weather Display Frame
@@ -121,9 +119,7 @@ class WeatherAppPro:
                                               text_color="gray")
         self.update_time_label.pack(side="bottom", pady=10)
 
-        # ==========================================
-        #        TAB 2: 5-DAY FORECAST
-        # ==========================================
+       
 
         self.forecast_title = ctk.CTkLabel(self.tab2, text="Upcoming Weather", font=("Roboto", 20, "bold"))
         self.forecast_title.pack(pady=(10, 15))
@@ -148,9 +144,7 @@ class WeatherAppPro:
 
             self.forecast_frames.append({"day": day_lbl, "icon": icon_lbl, "desc": desc_lbl, "temp": temp_lbl})
 
-        # ==========================================
-        #           TAB 3: HISTORY
-        # ==========================================
+       
 
         style = ttk.Style()
         style.theme_use("default")
@@ -185,9 +179,9 @@ class WeatherAppPro:
                                     font=("Roboto", 11), text_color="gray")
         footer_label.pack(side="bottom", pady=10)
 
-    # --- AUTOCOMPLETE LOGIC ---
+   
     def update_suggestions(self, event):
-        # Hide dropdown if box is empty or special key pressed
+        
         typed = self.city_entry.get().strip().title()
         if len(typed) < 1 or event.keysym in ["Return", "Tab", "Shift_L", "Shift_R"]:
             self.suggestion_frame.place_forget()
@@ -218,9 +212,9 @@ class WeatherAppPro:
         self.city_entry.delete(0, ctk.END)
         self.city_entry.insert(0, city)
         self.suggestion_frame.place_forget()
-        self.fetch_weather()  # Automatically search when clicked!
+        self.fetch_weather()  # Automatically search when clicked
 
-    # --- Setup & Utilities ---
+    
     def toggle_theme(self):
         if self.theme_switch.get() == 1:
             ctk.set_appearance_mode("dark")
@@ -247,7 +241,7 @@ class WeatherAppPro:
         }
         return emoji_map.get(icon_code, "🌍")
 
-    # --- Core API Logic ---
+    # Core API Logic
     def fetch_weather(self):
         self.suggestion_frame.place_forget()  # Hide autocomplete if open
 
@@ -267,7 +261,7 @@ class WeatherAppPro:
             response = requests.get(current_url)
             data = response.json()
 
-            # 🔥 UPDATED: Smart Error Handling based on API Status Codes
+           
             api_code = str(data.get("cod", ""))
 
             if api_code != "200":
@@ -282,7 +276,7 @@ class WeatherAppPro:
 
                     if close_matches:
                         suggestion = close_matches[0]
-                        # Prevent infinite loop if the spelling is already exactly the same!
+                        
                         if city.title() == suggestion:
                             messagebox.showerror("Error", f"City '{city}' not found in the weather database.")
                             return
@@ -295,7 +289,7 @@ class WeatherAppPro:
                     else:
                         messagebox.showerror("Error", f"City not found: {data.get('message', 'Unknown error')}")
                 else:
-                    # Catch-all for any other weird errors
+                    
                     messagebox.showerror("Error", f"API Error {api_code}: {data.get('message', 'Unknown error')}")
                 return
 
