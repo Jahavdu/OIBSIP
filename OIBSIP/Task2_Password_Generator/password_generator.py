@@ -34,7 +34,7 @@ class PasswordGeneratorPro:
         self.history_file = "password_history.csv"
         self.setup_file()
 
-        # --- Top Header ---
+       
         top_bar = ctk.CTkFrame(root, fg_color="transparent")
         top_bar.pack(fill="x", padx=20, pady=(15, 5))
 
@@ -45,16 +45,13 @@ class PasswordGeneratorPro:
         self.theme_switch.pack(side="right")
         self.theme_switch.select()
 
-        # --- Tabbed Interface ---
+        
         self.tabview = ctk.CTkTabview(root, width=460, height=550, corner_radius=10)
         self.tabview.pack(padx=20, pady=5, fill="both", expand=True)
 
         self.tab1 = self.tabview.add("Generator")
         self.tab2 = self.tabview.add("History")
 
-        # ==========================================
-        #           TAB 1: GENERATOR
-        # ==========================================
 
         length_frame = ctk.CTkFrame(self.tab1, fg_color="transparent")
         length_frame.pack(pady=(10, 5), fill="x", padx=20)
@@ -113,11 +110,7 @@ class PasswordGeneratorPro:
                                       hover_color="#218838", command=self.copy_to_clipboard)
         self.copy_btn.pack(pady=(5, 15))
 
-        # ==========================================
-        #           TAB 2: HISTORY
-        # ==========================================
-
-        # 🔥 NEW: Reveal History Switch
+       
         hist_top_frame = ctk.CTkFrame(self.tab2, fg_color="transparent")
         hist_top_frame.pack(fill="x", padx=10, pady=(5, 0))
 
@@ -159,7 +152,6 @@ class PasswordGeneratorPro:
                                     font=("Roboto", 11), text_color="gray")
         footer_label.pack(side="bottom", pady=10)
 
-    # --- Auxiliary Functions ---
     def toggle_theme(self):
         if self.theme_switch.get() == 1:
             ctk.set_appearance_mode("dark")
@@ -193,7 +185,6 @@ class PasswordGeneratorPro:
                 writer = csv.writer(file)
                 writer.writerow(["Date", "Password", "Strength"])
 
-    # --- Core Generation Logic ---
     def generate_password(self):
         length = int(self.length_slider.get())
 
@@ -270,13 +261,13 @@ class PasswordGeneratorPro:
             writer.writerow([date_str, password, strength])
         self.load_history()
 
-    # 🔥 NEW: Dynamic Loading Logic based on Toggle Switch
+  
     def load_history(self):
         for item in self.tree.get_children():
             self.tree.delete(item)
 
         try:
-            # Check if switch is ON or OFF (Defaults to OFF if UI hasn't fully loaded yet)
+            # Check if switch is ON or OFF 
             show_passwords = hasattr(self, 'reveal_switch') and self.reveal_switch.get() == 1
 
             with open(self.history_file, mode='r', encoding='utf-8') as file:
@@ -313,7 +304,7 @@ class PasswordGeneratorPro:
 
         self.load_history()
 
-    # 🔥 NEW: Smart PDF Export Dialog
+   
     def export_pdf(self):
         if not PDF_AVAILABLE:
             messagebox.showerror("Missing Library", "Please run: pip install fpdf")
