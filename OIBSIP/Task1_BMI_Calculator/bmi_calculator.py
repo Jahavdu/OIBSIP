@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-# Try to import fpdf for PDF generation
+
 try:
     from fpdf import FPDF
 
@@ -23,7 +23,7 @@ class BMICalculatorPro:
     def __init__(self, root):
         self.root = root
         self.root.title("Advanced BMI Tracker")
-        # 🔥 REDUCED HEIGHT: Fits perfectly on standard laptop screens!
+        
         self.root.geometry("450x680")
         self.root.resizable(False, False)
 
@@ -46,16 +46,15 @@ class BMICalculatorPro:
         self.theme_switch.pack(side="right")
         self.theme_switch.select()
 
-        # 🔥 NEW: Tabbed Interface ---
+       -
         self.tabview = ctk.CTkTabview(root, width=410, height=520, corner_radius=10)
         self.tabview.pack(padx=20, pady=5, fill="both", expand=True)
 
         self.tab1 = self.tabview.add("Calculator")
         self.tab2 = self.tabview.add("History & Export")
 
-        # ==========================================
-        #           TAB 1: CALCULATOR
-        # ==========================================
+      
+        
 
         self.unit_var = ctk.StringVar(value="Metric")
         self.unit_switch = ctk.CTkSegmentedButton(self.tab1, values=["Metric", "Imperial"],
@@ -107,9 +106,6 @@ class BMICalculatorPro:
         self.gauge.pack(pady=(5, 15))
         self.gauge.set(0)
 
-        # ==========================================
-        #         TAB 2: HISTORY & EXPORT
-        # ==========================================
 
         style = ttk.Style()
         style.theme_use("default")
@@ -148,14 +144,10 @@ class BMICalculatorPro:
                                        hover_color="#5A6268", command=self.export_pdf)
         export_pdf_btn.grid(row=0, column=0)
 
-        # ==========================================
-        #    FOOTER (Stays at the very bottom)
-        # ==========================================
         footer_label = ctk.CTkLabel(root, text="Developed by Durvesh Jadhav\nPython Programming Internship Project",
                                     font=("Roboto", 11), text_color="gray")
         footer_label.pack(side="bottom", pady=10)
 
-    # --- Core Functions ---
     def toggle_theme(self):
         if self.theme_switch.get() == 1:
             ctk.set_appearance_mode("dark")
@@ -249,7 +241,7 @@ class BMICalculatorPro:
             writer = csv.writer(file)
             writer.writerow([date_str, weight, height, bmi, category])
 
-        self.load_history()  # Instantly refresh the table!
+        self.load_history()  
 
     def clear_inputs(self):
         self.weight_entry.delete(0, ctk.END)
@@ -261,7 +253,7 @@ class BMICalculatorPro:
         self.ideal_label.configure(text="")
         self.gauge.set(0)
 
-        # --- History & Data Functions ---
+       
 
     def load_history(self):
         # Clear existing data in treeview
